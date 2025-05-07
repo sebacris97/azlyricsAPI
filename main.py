@@ -10,7 +10,7 @@ app = FastAPI()
 
 def extern_request(url):
     TOKEN = os.environ.get('TOKEN')
-    SCRAP_URL = 'https://api.scraperapi.com/'
+    SCRAP_URL = os.environ.get('S_URL')
     PAYLOAD = { 'api_key': TOKEN, 'url': url,
                 'follow_redirect': 'true', 'retry_404': 'true' }
     return requests.get(SCRAP_URL, params=PAYLOAD)
