@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import os
+from az_google_search import perform_search
 
 BASE_URL = "https://www.azlyrics.com"
 
@@ -13,6 +14,8 @@ def artist_url(artist):
     return f"{BASE_URL}/{artist[0]}/{cleaned_artist_name(artist)}.html"
 
 def song_url(link):
+
+    a = link.find('a').attrs['href']
     return link.find('a').attrs['href']
 
 #sometimes the href is from an external azlyrics page
@@ -38,7 +41,8 @@ def get_songs_links(soup):
 
 #el try es por que aveces no hay href en una cancion
 def fetch_song(artist_name, song_name, request=requests.get):
-    response = request(artist_url(artist_name))
+    #response = request(artist_url(artist_name))
+    response = request(perform_search(artist_name))
     if response:
         soup = BeautifulSoup(response.text, 'html.parser')
         songs_dic = get_songs_links(soup)
@@ -50,24 +54,15 @@ def scraped_song_lyrics(response):
     return soup.find_all("div")[24].text.replace('\r','')
 
 
-"""
-usage:
-artist_name -> a string with the name of the artist
-song_name -> a string with the name of the song
-request -> you can use your own request, default is requests.get
-save_json -> when True a song_name.json is saved on the filesystem, default is False
-return_text -> if you wish you can get the plain string ,default is False
-"""
 
 def save(song_name):
     folder_name = 'json_lyrics'
     os.makedirs(folder_name,exist_ok=True)
     return open(f'{folder_name}/{song_name}.json','w')
+
             
 def get_lyrics(artist_name='',song_name='',request=requests.get,
                save_json=False, return_json=False):
-    print(artist_name)
-    print(song_name)
     if artist_name=='' or song_name=='':
         return "artist name and song name cannot be empty"
     song_url = fetch_song(artist_name,song_name,request)
@@ -79,6 +74,16 @@ def get_lyrics(artist_name='',song_name='',request=requests.get,
         return lyrics if not return_json else data_json
     return
 
+
+
+"""
+usage:
+artist_name -> a string with the name of the artist
+song_name -> a string with the name of the song
+request -> you can use your own request, default is requests.get
+save_json -> when True a song_name.json is saved on the filesystem, default is False
+return_text -> if you wish you can get the plain string ,default is False
+"""
 
 
 
