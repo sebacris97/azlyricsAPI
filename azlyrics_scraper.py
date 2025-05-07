@@ -37,7 +37,7 @@ def get_songs_links(soup):
     return songs_dic
 
 #el try es por que aveces no hay href en una cancion
-def fetch_song(artist_name, song_name, request=requests.get):
+async def fetch_song(artist_name, song_name, request=requests.get):
     response = request(artist_url(artist_name))
     if response:
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -64,11 +64,11 @@ def save(song_name):
     os.makedirs(folder_name,exist_ok=True)
     return open(f'{folder_name}/{song_name}.json','w')
             
-def get_lyrics(artist_name='',song_name='',request=requests.get,
+async def get_lyrics(artist_name='',song_name='',request=requests.get,
                save_json=False, return_json=False):
     if artist_name=='' or song_name=='':
         return
-    song_url = fetch_song(artist_name,song_name,request)
+    song_url = await fetch_song(artist_name,song_name,request)
     response = request(song_url)
     if response:
         lyrics = scraped_song_lyrics(response)
