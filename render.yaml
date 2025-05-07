@@ -1,0 +1,9 @@
+services:
+  # A Docker web service
+  - type: web
+    name: azlyricsAPI
+    runtime: python
+    plan: free
+    autoDeploy: false
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host https://azlyricsapi.onrender.com --port $PORT
