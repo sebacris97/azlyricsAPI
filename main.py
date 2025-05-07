@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from azlyrics_scraper import get_lyrics
 import requests
+from urllib.parse import unquote_plus
 
 app = FastAPI()
 
@@ -13,6 +14,8 @@ def extern_request(url):
 
 @app.get("/{artist_name}/{song_name}")
 async def root(artist_name,song_name):
+    print(unquote_plus(artist_name))
+    print(unquote_plus(song_name))
     lyrics = get_lyrics(
                     artist_name = artist_name,
                     song_name = song_name,
