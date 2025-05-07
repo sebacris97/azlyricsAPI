@@ -66,8 +66,10 @@ def save(song_name):
             
 async def get_lyrics(artist_name='',song_name='',request=requests.get,
                save_json=False, return_json=False):
+    print(artist_name)
+    print(song_name)
     if artist_name=='' or song_name=='':
-        return
+        return "artist name and song name cannot be empty"
     song_url = await fetch_song(artist_name,song_name,request)
     response = request(song_url)
     if response:

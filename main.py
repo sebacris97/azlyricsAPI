@@ -21,8 +21,6 @@ async def get_lyrics_view(artist_name:
                           str = Path(..., description="Artist name to be rerieved."),
                           song_name:
                           str = Path(..., description="Song name to be rerieved."),):
-    print(unquote(artist_name))
-    print(unquote(song_name))
     lyrics = await get_lyrics(
                     artist_name = artist_name,
                     song_name = song_name,
