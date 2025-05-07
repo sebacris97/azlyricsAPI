@@ -4,7 +4,9 @@ import json
 import os
 
 BASE_URL = "https://www.azlyrics.com"
-headers = {'User-Agent': 'Mozilla/5.0'}
+
+default_request = requests.Session()
+default_request.headers.update({'User-Agent': 'Mozilla/5.0'})
 
 def cleaned_artist_name(artist):
     return ''.join(artist.split(' '))
@@ -37,8 +39,8 @@ def get_songs_links(soup):
     return songs_dic
 
 #el try es por que aveces no hay href en una cancion
-def fetch_song(artist_name, song_name, request=requests.get):
-    response = request(artist_url(artist_name),headers=headers)
+def fetch_song(artist_name, song_name, request=default_request.get):
+    response = request(artist_url(artist_name))
     if response:
         soup = BeautifulSoup(response.text, 'html.parser')
         songs_dic = get_songs_links(soup)
@@ -64,14 +66,14 @@ def save(song_name):
     os.makedirs(folder_name,exist_ok=True)
     return open(f'{folder_name}/{song_name}.json','w')
             
-def get_lyrics(artist_name='',song_name='',request=requests.get,
+def get_lyrics(artist_name='',song_name='',request=default_request.get,
                save_json=False, return_json=False):
     print(artist_name)
     print(song_name)
     if artist_name=='' or song_name=='':
         return "artist name and song name cannot be empty"
     song_url = fetch_song(artist_name,song_name,request)
-    response = request(song_url,headers=headers)
+    response = request(song_url)
     if response:
         lyrics = scraped_song_lyrics(response)
         data_json = {song_name:lyrics}
