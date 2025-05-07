@@ -16,7 +16,7 @@ def extern_request(url):
 async def root():
     return "main page"
 
-@app.get("/{artist_name}/{song_name}")
+@app.get("/get-lyrics/{artist_name}/{song_name}")
 async def get_lyrics_view(artist_name: str,
                           song_name: str):
     print(unquote(artist_name))
