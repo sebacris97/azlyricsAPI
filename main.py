@@ -23,8 +23,8 @@ app = FastAPI()
 
 @app.get("/get-lyrics/{artist_name}/{song_name}")
 def read_lyrics(artist_name: str, song_name: str):
-    lyrics = get_lyrics(artist_name=unquote(artist_name),
-                        song_name=unquote(song_name))
+    lyrics = get_lyrics(artist_name=unquote(artist_name).lower(),
+                        song_name=unquote(song_name).lower())
     if not lyrics:
         raise HTTPException(status_code=404, detail="Lyrics not found")
     return {"artist": artist_name, "song": song_name, "lyrics": lyrics}
