@@ -3,11 +3,13 @@ from azlyrics_scraper import get_lyrics
 import requests
 from urllib.parse import unquote
 from fastapi.responses import JSONResponse
+import os
+
 
 app = FastAPI()
 
 def extern_request(url):
-    TOKEN = ''
+    TOKEN = os.environ.get('TOKEN')
     SCRAP_URL = 'https://api.scraperapi.com/'
     PAYLOAD = { 'api_key': TOKEN, 'url': url,
                 'follow_redirect': 'true', 'retry_404': 'true' }
