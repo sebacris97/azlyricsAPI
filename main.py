@@ -2,6 +2,7 @@ from fastapi import FastAPI, Path
 from azlyrics_scraper import get_lyrics
 import requests
 from urllib.parse import unquote
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -21,11 +22,15 @@ async def get_lyrics_view(artist_name:
                           str = Path(..., description="Artist name to be rerieved."),
                           song_name:
                           str = Path(..., description="Song name to be rerieved."),):
-    lyrics = await get_lyrics(
-                    artist_name = artist_name,
-                    song_name = song_name,
+    lyrics = get_lyrics(
+                    artist_name = unquote(artist_name),
+                    song_name = unquote(song_name),
                     #request = extern_request,
                     #save_json = True,
-                    return_json = True
+                    #return_json = True
                     )
-    return lyrics
+    return JSONResponse(content=
+                        {"artist": artist_name,
+                         "song": song_name,
+                         "lyrics": lyrics
+                        })
