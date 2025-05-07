@@ -23,17 +23,12 @@ app = FastAPI()
 
 @app.get("/get-lyrics/{artist_name}/{song_name}")
 def read_lyrics(artist_name: str, song_name: str):
-    # Decodificar en caso de que venga con %20 u otros caracteres
-    artist_name = unquote(artist_name)
-    song_name = unquote(song_name)
-    
-    try:
-        lyrics = get_lyrics(artist_name=artist_name, song_name=song_name)
-        if not lyrics:
-            raise HTTPException(status_code=404, detail="Lyrics not found")
-        return {"artist": artist_name, "song": song_name, "lyrics": lyrics}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    lyrics = get_lyrics(artist_name=unquote(artist_name),
+                        song_name=unquote(song_name))
+    if not lyrics:
+        raise HTTPException(status_code=404, detail="Lyrics not found")
+    return {"artist": artist_name, "song": song_name, "lyrics": lyrics}
+
 
 """
 @app.get("/get-lyrics/{artist_name}/{song_name}")
