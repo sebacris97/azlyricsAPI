@@ -7,7 +7,7 @@ from fastapi.responses import JSONResponse
 app = FastAPI()
 
 def extern_request(url):
-    TOKEN = '7bc4e87690da53ca686a86fa46a00f32'
+    TOKEN = ''
     SCRAP_URL = 'https://api.scraperapi.com/'
     PAYLOAD = { 'api_key': TOKEN, 'url': url,
                 'follow_redirect': 'true', 'retry_404': 'true' }
