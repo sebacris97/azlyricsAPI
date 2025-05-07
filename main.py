@@ -17,7 +17,6 @@ def extern_request(url):
 async def root():
     return "main page"
 
-app = FastAPI()
 
 @app.get("/get-lyrics/{artist_name}/{song_name}/extern")
 def read_lyrics_extern(artist_name: str, song_name: str):
