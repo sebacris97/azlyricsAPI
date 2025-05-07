@@ -42,7 +42,7 @@ def fetch_song(artist_name, song_name, request=requests.get):
     if response:
         soup = BeautifulSoup(response.text, 'html.parser')
         songs_dic = get_songs_links(soup)
-        return songs_dic[song_name]
+        return songs_dic.get(song_name.lower())
     return
 
 def scraped_song_lyrics(response):
