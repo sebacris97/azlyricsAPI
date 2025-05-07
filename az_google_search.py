@@ -1,8 +1,8 @@
 import httpx
 
 
-GOOGLE_API_KEY = 'AIzaSyBkHSQ4sShpdS0CzpZAcyVZM9sm5OyfO6k'
-SEARCH_ENGINE_ID = 'b68b26a7f065541a7'
+GOOGLE_API_KEY = ''
+SEARCH_ENGINE_ID = ''
 
 def google_search(GOOGLE_API_KEY, SEARCH_ENGINE_ID, query, **params):
     params.update({
