@@ -4,7 +4,7 @@ import json
 import os
 
 BASE_URL = "https://www.azlyrics.com"
-
+headers = {'User-Agent': 'Mozilla/5.0'}
 
 def cleaned_artist_name(artist):
     return ''.join(artist.split(' '))
@@ -38,7 +38,7 @@ def get_songs_links(soup):
 
 #el try es por que aveces no hay href en una cancion
 def fetch_song(artist_name, song_name, request=requests.get):
-    response = request(artist_url(artist_name))
+    response = request(artist_url(artist_name),headers=headers))
     if response:
         soup = BeautifulSoup(response.text, 'html.parser')
         songs_dic = get_songs_links(soup)
@@ -71,7 +71,7 @@ def get_lyrics(artist_name='',song_name='',request=requests.get,
     if artist_name=='' or song_name=='':
         return "artist name and song name cannot be empty"
     song_url = fetch_song(artist_name,song_name,request)
-    response = request(song_url)
+    response = request(song_url,headers=headers)
     if response:
         lyrics = scraped_song_lyrics(response)
         data_json = {song_name:lyrics}
