@@ -6,6 +6,12 @@ from az_google_search import perform_search
 
 BASE_URL = "https://www.azlyrics.com"
 
+def search_key_like(dic, query):
+    for key in dic.keys():
+        if query.lower() in key.lower():
+            return dic[key]
+    return dic[query]
+
 
 def cleaned_artist_name(artist):
     return ''.join(artist.split(' '))
@@ -28,7 +34,8 @@ def get_song_list(list_album_items):
 
 #sometimes the song doesn´t have a lyric meaning the anchor tag is empty
 #so you have to catch the AttributeError on song_url(link)
-def get_songs_links(soup):
+def get_songs_links(response):
+    soup = BeautifulSoup(response, 'html.parser')
     list_album_items = soup.find_all("div", class_="listalbum-item")
     songs_list = get_song_list(list_album_items)
     songs_dic = {}
@@ -44,9 +51,9 @@ def fetch_song(artist_name, song_name, request=requests.get):
     #response = request(artist_url(artist_name))
     response = request(perform_search(artist_name))
     if response:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        songs_dic = get_songs_links(soup)
-        return songs_dic.get(song_name.lower())
+        songs_dic = get_songs_links(response.text)
+        #return songs_dic.get(song_name.lower())
+        return search_key_like(songs_dic,song_name.lower())
     return
 
 def scraped_song_lyrics(response):
