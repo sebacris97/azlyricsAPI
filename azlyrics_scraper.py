@@ -38,7 +38,7 @@ def get_songs_links(soup):
 
 #el try es por que aveces no hay href en una cancion
 def fetch_song(artist_name, song_name, request=requests.get):
-    response = request(artist_url(artist_name),headers=headers))
+    response = request(artist_url(artist_name),headers=headers)
     if response:
         soup = BeautifulSoup(response.text, 'html.parser')
         songs_dic = get_songs_links(soup)
