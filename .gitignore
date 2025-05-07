@@ -1,0 +1,6 @@
+*.json
+/json_lyrics/
+credentials.txt
+ENTORNO VIRTUAL PYTHON.txt
+/venv/
+/__pycache__/
