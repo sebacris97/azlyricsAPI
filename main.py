@@ -3,6 +3,7 @@ from azlyrics_scraper import get_lyrics
 import requests
 from urllib.parse import unquote
 from fastapi.responses import JSONResponse
+from fastapi.encoders import jsonable_encoder
 
 app = FastAPI()
 
@@ -26,11 +27,11 @@ def read_lyrics_extern(artist_name: str, song_name: str):
                         )
     if not lyrics:
         raise HTTPException(status_code=404, detail="Lyrics not found")
-    return JSONResponse(content=
-                        {"artist": artist_name,
-                         "song": song_name,
-                         "lyrics": lyrics
-                        })
+    content = {"artist": artist_name,
+               "song": song_name,
+               "lyrics": lyrics
+              }
+    return JSONResponse(content=jsonable_encoder(content))
 
 
 @app.get("/get-lyrics/local/{artist_name}/{song_name}")
@@ -40,12 +41,11 @@ def read_lyrics(artist_name: str, song_name: str):
                         )
     if not lyrics:
         raise HTTPException(status_code=404, detail="Lyrics not found")
-    
-    return JSONResponse(content=
-                        {"artist": artist_name,
-                         "song": song_name,
-                         "lyrics": lyrics
-                        })
+    content = {"artist": artist_name,
+               "song": song_name,
+               "lyrics": lyrics
+              }
+    return JSONResponse(content=jsonable_encoder(content))
 
 
 """
