@@ -17,7 +17,8 @@ async def root():
     return "main page"
 
 @app.get("/{artist_name}/{song_name}")
-async def get_lyrics_view(artist_name,song_name):
+async def get_lyrics_view(artist_name: str,
+                          song_name: str):
     print(unquote(artist_name))
     print(unquote(song_name))
     lyrics = get_lyrics(
