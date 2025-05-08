@@ -65,7 +65,7 @@ def fetch_song(artist_name, song_name, request=default_request):
     return
 
 def scraped_song_lyrics(response):
-    soup = BeautifulSoup(response.text, 'html.parser')
+    soup = BeautifulSoup(response.text.encode('ISO-8859-1'), 'html.parser')
     return soup.find_all("div")[24].text.replace('\r','')
 
 
