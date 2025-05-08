@@ -1,3 +1,4 @@
+import json
 from fastapi import FastAPI, Path, HTTPException
 from azlyrics_scraper import get_lyrics
 import requests
@@ -28,17 +29,19 @@ def read_lyrics_extern(artist_name: str, song_name: str):
                         )
     if not lyrics:
         raise HTTPException(status_code=404, detail="Lyrics not found")
-    return {"artist": artist_name, "song": song_name, "lyrics": lyrics}
+    data = {"artist": artist_name, "song": song_name, "lyrics": lyrics}
+    return data
 
 
 @app.get("/local/get-lyrics/{artist_name}/{song_name}")
 def read_lyrics(artist_name: str, song_name: str):
     lyrics = get_lyrics(artist_name=unquote(artist_name).lower(),
                         song_name=unquote(song_name).lower(),
-                        )
+                        ).encode('ISO-8859-1')
     if not lyrics:
         raise HTTPException(status_code=404, detail="Lyrics not found")
-    return {"artist": artist_name, "song": song_name, "lyrics": lyrics}
+    data = {"artist": artist_name, "song": song_name, "lyrics": lyrics}
+    return data
 
 
 """

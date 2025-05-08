@@ -9,7 +9,8 @@ HEADERS = {'User-Agent':
            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36',
            'Accept-Encoding': 'gzip, deflate',
            'Accept': '*/*',
-           'Connection': 'keep-alive'}
+           'Connection': 'keep-alive'
+           }
 
 def default_request(url):
     return requests.get(url,headers=HEADERS)
@@ -65,7 +66,7 @@ def fetch_song(artist_name, song_name, request=default_request):
     return
 
 def scraped_song_lyrics(response):
-    soup = BeautifulSoup(response.text.encode('ISO-8859-1'), 'html.parser')
+    soup = BeautifulSoup(response.text, 'html.parser')
     return soup.find_all("div")[24].text.replace('\r','')
 
 
