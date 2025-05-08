@@ -5,6 +5,14 @@ import os
 from az_google_search import perform_search
 
 BASE_URL = "https://www.azlyrics.com"
+HEADERS = {'User-Agent': 
+           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36',
+           'Accept-Encoding': 'gzip, deflate',
+           'Accept': '*/*',
+           'Connection': 'keep-alive'}
+
+def default_request(url):
+    return requests.get(url,headers=HEADERS)
 
 def search_key_like(dic, query):
     for key in dic.keys():
@@ -47,7 +55,7 @@ def get_songs_links(response):
     return songs_dic
 
 #el try es por que aveces no hay href en una cancion
-def fetch_song(artist_name, song_name, request=requests.get):
+def fetch_song(artist_name, song_name, request=default_request):
     #response = request(artist_url(artist_name))
     response = request(perform_search(artist_name))
     if response:
@@ -68,7 +76,7 @@ def save(song_name):
     return open(f'{folder_name}/{song_name}.json','w')
 
             
-def get_lyrics(artist_name='',song_name='',request=requests.get,
+def get_lyrics(artist_name='',song_name='',request=default_request,
                save_json=False, return_json=False):
     if artist_name=='' or song_name=='':
         return "artist name and song name cannot be empty"

@@ -31,7 +31,7 @@ def read_lyrics_extern(artist_name: str, song_name: str):
     return {"artist": artist_name, "song": song_name, "lyrics": lyrics}
 
 
-@app.get("/get-lyrics/local/{artist_name}/{song_name}")
+@app.get("/local/get-lyrics/{artist_name}/{song_name}")
 def read_lyrics(artist_name: str, song_name: str):
     lyrics = get_lyrics(artist_name=unquote(artist_name).lower(),
                         song_name=unquote(song_name).lower(),
