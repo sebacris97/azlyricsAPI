@@ -20,6 +20,9 @@ def extern_request2(url):
 """
 
 
+
+
+
 """
 def extern_request(url):
     SCRAP_URL = "https://azlyrics.com"
@@ -43,8 +46,18 @@ def extern_request(url):
     gateway.start()
     session = requests.Session()
     session.mount(SCRAP_URL, gateway)
-    return session.get(url)
+    print('AAAAAAAAAAAAA')
+    print(url)
+    response = session.get(url)
+    print('AAAAAAAAAAAAA')
+    try:
+        print(response.url)
+    except:
+        print('NOOOO PUDEEEEEE')
+    return response
     #gateway.shutdown() 
+
+
 
 @app.get("/")
 async def root():
