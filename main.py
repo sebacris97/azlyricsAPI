@@ -6,7 +6,7 @@ import requests
 from urllib.parse import unquote
 from fastapi.responses import JSONResponse
 import os
-from requests_ip_rotator import ApiGateway
+from requests_ip_rotator import ApiGateway, EXTRA_REGIONS
 
 app = FastAPI()
 
@@ -20,18 +20,31 @@ def extern_request2(url):
 """
 
 
-SCRAP_URL = "https://azlyrics.com"
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    
+"""
 def extern_request(url):
+    SCRAP_URL = "https://azlyrics.com"
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     with ApiGateway(SCRAP_URL,
                     access_key_id = AWS_ACCESS_KEY_ID,
                     access_key_secret = AWS_SECRET_ACCESS_KEY) as g:
         session = requests.Session()
         session.mount("https://site.com", g)
         return session.get(url)
+"""
 
+def extern_request(url):
+    SCRAP_URL = "https://azlyrics.com"
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    gateway = ApiGateway(SCRAP_URL,
+                         access_key_id = AWS_ACCESS_KEY_ID,
+                         access_key_secret = AWS_SECRET_ACCESS_KEY)
+    gateway.start()
+    session = requests.Session()
+    session.mount(SCRAP_URL, gateway)
+    return session.get(url)
+    #gateway.shutdown() 
 
 @app.get("/")
 async def root():
