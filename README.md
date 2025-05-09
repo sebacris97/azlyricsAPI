@@ -64,8 +64,4 @@ The `get_lyrics` function in `azlyrics_scraper.py` supports:
   - Users will be able to choose from which website they want to retrieve lyrics.
   - By default, AZLyrics will be used. If not found, fallback to other sites.
 
----
 
-## 📝 License
-
-MIT License
