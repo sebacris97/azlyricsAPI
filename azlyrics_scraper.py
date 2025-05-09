@@ -62,10 +62,13 @@ def fetch_song(artist_name, song_name, request=default_request):
     response = request(query.get('link'))
     if response:
         songs_dic = get_songs_links(response.text)
+        try:
+            lyrics_url = search_key_like(songs_dic,song_name.lower())
+        except KeyError:
+            return f'Cancion {song_name} No Encontrada'
         #return songs_dic.get(song_name.lower())
-        print('AAAAAAAAAAAA', query['correct_name'])
         return {'artist':query.get('correct_name', artist_name),
-                'lyrics_url': search_key_like(songs_dic,song_name.lower()) }
+                'lyrics_url': lyrics_url }
     return
 
 def scraped_song_lyrics(response):
@@ -85,14 +88,17 @@ def get_lyrics(artist_name='',song_name='',request=default_request,
     if artist_name=='' or song_name=='':
         return "artist name and song name cannot be empty"
     song_url = fetch_song(artist_name,song_name,request)
-    response = request(song_url.get('lyrics_url'))
-    if response:
-        lyrics = scraped_song_lyrics(response)
-        correct_name = song_url.get('artist')
-        data_json = {'artist':correct_name,'song':song_name,'lyrics':lyrics}
-        json.dump(data_json, save(song_name)) if save_json else None 
-        return data_json if not just_lyrics else lyrics
-    return
+    try:
+        response = request(song_url.get('lyrics_url'))
+        if response:
+            lyrics = scraped_song_lyrics(response)
+            correct_name = song_url.get('artist')
+            data_json = {'artist':correct_name,'song':song_name,'lyrics':lyrics}
+            json.dump(data_json, save(song_name)) if save_json else None 
+            return data_json if not just_lyrics else lyrics
+        return
+    except:
+        return None
 
 
 
