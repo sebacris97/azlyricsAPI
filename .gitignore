@@ -6,3 +6,4 @@ ENTORNO VIRTUAL PYTHON.txt
 /__pycache__/
 .env
 .env.bat
+activate
