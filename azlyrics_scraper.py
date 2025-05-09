@@ -58,11 +58,14 @@ def get_songs_links(response):
 #el try es por que aveces no hay href en una cancion
 def fetch_song(artist_name, song_name, request=default_request):
     #response = request(artist_url(artist_name))
-    response = request(perform_search(artist_name))
+    query = perform_search(artist_name)
+    response = request(query.get('link'))
     if response:
         songs_dic = get_songs_links(response.text)
         #return songs_dic.get(song_name.lower())
-        return search_key_like(songs_dic,song_name.lower())
+        print('AAAAAAAAAAAA', query['correct_name'])
+        return {'artist':query.get('correct_name', artist_name),
+                'lyrics_url': search_key_like(songs_dic,song_name.lower()) }
     return
 
 def scraped_song_lyrics(response):
@@ -78,16 +81,17 @@ def save(song_name):
 
             
 def get_lyrics(artist_name='',song_name='',request=default_request,
-               save_json=False, return_json=False):
+               save_json=False, just_lyrics=False):
     if artist_name=='' or song_name=='':
         return "artist name and song name cannot be empty"
     song_url = fetch_song(artist_name,song_name,request)
-    response = request(song_url)
+    response = request(song_url.get('lyrics_url'))
     if response:
         lyrics = scraped_song_lyrics(response)
-        data_json = {song_name:lyrics}
+        correct_name = song_url.get('artist')
+        data_json = {'artist':correct_name,'song':song_name,'lyrics':lyrics}
         json.dump(data_json, save(song_name)) if save_json else None 
-        return lyrics if not return_json else data_json
+        return data_json if not just_lyrics else lyrics
     return
 
 

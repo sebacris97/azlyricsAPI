@@ -17,7 +17,6 @@ def google_search(GOOGLE_API_KEY, SEARCH_ENGINE_ID, query, **params):
     return response.json()
 
 
-
 def perform_search(query):
     response = google_search(
             GOOGLE_API_KEY=GOOGLE_API_KEY,
@@ -25,5 +24,7 @@ def perform_search(query):
             query=query,
             start=1
         )
-    return response['items'][0]['link']
-
+    corrected_query = response['spelling']['correctedQuery']
+    link = response['items'][0]['link']
+    return {'correct_name': corrected_query,
+            'link': link}

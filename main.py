@@ -23,24 +23,23 @@ async def root():
 
 @app.get("/get-lyrics/{artist_name}/{song_name}/")
 def read_lyrics_extern(artist_name: str, song_name: str):
-    lyrics = get_lyrics(artist_name=unquote(artist_name).lower(),
+    data = get_lyrics(artist_name=unquote(artist_name).lower(),
                         song_name=unquote(song_name).lower(),
                         request=extern_request
                         )
-    if not lyrics:
+    if not data:
         raise HTTPException(status_code=404, detail="Lyrics not found")
-    data = {"artist": artist_name, "song": song_name, "lyrics": lyrics}
     return data
 
 
 @app.get("/local/get-lyrics/{artist_name}/{song_name}")
 def read_lyrics(artist_name: str, song_name: str):
-    lyrics = get_lyrics(artist_name=unquote(artist_name).lower(),
+    data = get_lyrics(artist_name=unquote(artist_name).lower(),
                         song_name=unquote(song_name).lower(),
-                        ).encode('ISO-8859-1')
-    if not lyrics:
+                        )
+    if not data:
         raise HTTPException(status_code=404, detail="Lyrics not found")
-    data = {"artist": artist_name, "song": song_name, "lyrics": lyrics}
+    data['lyrics'] = data['lyrics'].encode('ISO-8859-1')
     return data
 
 
