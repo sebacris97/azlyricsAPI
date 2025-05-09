@@ -67,6 +67,7 @@ def fetch_song(artist_name, song_name, request=default_request):
         try:
             lyrics_url = search_key_like(songs_dic,song_name.lower())
         except KeyError:
+            print('XXXXXXXXXXXXXXX')
             return f'Cancion {song_name} No Encontrada'
         #return songs_dic.get(song_name.lower())
         return {'artist':query.get('correct_name', artist_name),
@@ -95,6 +96,7 @@ def get_lyrics(artist_name='',song_name='',request=default_request,
         print('AAAAAAAAAAAA')
         print(response.url)
         if response:
+            print('ZZZZZZZZZZZZZZZZZZ')
             lyrics = scraped_song_lyrics(response)
             correct_name = song_url.get('artist')
             data_json = {'artist':correct_name,'song':song_name,'lyrics':lyrics}
