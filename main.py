@@ -46,15 +46,8 @@ def extern_request(url):
     gateway.start()
     session = requests.Session()
     session.mount(SCRAP_URL, gateway)
-    print('AAAAAAAAAAAAA')
     print(url)
-    response = session.get(url)
-    print('AAAAAAAAAAAAA')
-    try:
-        print(response.url)
-    except:
-        print('NOOOO PUDEEEEEE')
-    return response
+    return session.get(url)
     #gateway.shutdown() 
 
 

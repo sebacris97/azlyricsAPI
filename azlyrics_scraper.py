@@ -60,11 +60,10 @@ def fetch_song(artist_name, song_name, request=default_request):
     #response = request(artist_url(artist_name))
     query = perform_search(artist_name)
     response = request(query.get('link'))
-    print('AAAAAAAAAAAA')
-    print(response.url)
     if response:
         songs_dic = get_songs_links(response.text)
         try:
+            print(response.text)
             lyrics_url = search_key_like(songs_dic,song_name.lower())
         except KeyError:
             print('XXXXXXXXXXXXXXX')
@@ -93,10 +92,7 @@ def get_lyrics(artist_name='',song_name='',request=default_request,
     song_url = fetch_song(artist_name,song_name,request)
     try:
         response = request(song_url.get('lyrics_url'))
-        print('AAAAAAAAAAAA')
-        print(response.url)
         if response:
-            print('ZZZZZZZZZZZZZZZZZZ')
             lyrics = scraped_song_lyrics(response)
             correct_name = song_url.get('artist')
             data_json = {'artist':correct_name,'song':song_name,'lyrics':lyrics}
