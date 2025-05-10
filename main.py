@@ -11,7 +11,8 @@ from fake_useragent import UserAgent
 import random
 from selenium import webdriver
 import time
-
+import httpx
+from httpx_ip_rotator import ApiGatewayTransport
 
 ua = UserAgent()
 HEADERS = {'User-Agent': ua.random,
@@ -32,7 +33,13 @@ def extern_request2(url):
     return requests.get(SCRAP_URL, params=PAYLOAD)
 
 
-
+def extern_requestX(url):
+    gateway_transport = ApiGatewayTransport("https://azlyrics.com")
+    gateway.start()
+    mounts = {"https://azlyrics.com": gateway_transport}
+    client = httpx.Client(mounts=mounts)
+    response = client.get(url, params={"theme": "light"},headers=HEADERS)
+    return response
 
 
 def extern_request(url):
@@ -80,6 +87,19 @@ def read_lyrics_extern(artist_name: str, song_name: str):
     data['lyrics'] = data['lyrics'].encode('ISO-8859-1')
     return data
 
+@app.get("X/get-lyrics/{artist_name}/{song_name}/")
+def read_lyrics_extern(artist_name: str, song_name: str):
+    data = get_lyrics(artist_name=unquote(artist_name).lower(),
+                        song_name=unquote(song_name).lower(),
+                        request=extern_requestX
+                        )
+    if not data:
+        raise HTTPException(status_code=404, detail="Lyrics not found")
+    data['lyrics'] = data['lyrics'].encode('ISO-8859-1')
+    return data
+
+
+
 @app.get("/local/get-lyrics/{artist_name}/{song_name}")
 def read_lyrics(artist_name: str, song_name: str):
     data = get_lyrics(artist_name=unquote(artist_name).lower(),
@@ -89,6 +109,9 @@ def read_lyrics(artist_name: str, song_name: str):
         raise HTTPException(status_code=404, detail="Lyrics not found")
     data['lyrics'] = data['lyrics'].encode('ISO-8859-1')
     return data
+
+
+
 
 
 """
