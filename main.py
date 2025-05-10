@@ -10,7 +10,6 @@ from requests_ip_rotator import ApiGateway, EXTRA_REGIONS
 from fake_useragent import UserAgent
 import random
 from selenium import webdriver
-import time
 import httpx
 from httpx_ip_rotator import ApiGatewayTransport
 
@@ -34,13 +33,13 @@ def extern_request2(url):
 
 
 def extern_requestX(url):
-    gateway_transport = ApiGatewayTransport("https://azlyrics.com")
-    gateway.start()
-    mounts = {"https://azlyrics.com": gateway_transport}
-    client = httpx.Client(mounts=mounts)
-    response = client.get(url, params={"theme": "light"},headers=HEADERS)
-    return response
-
+    SCRAP_URL = "https://azlyrics.com"
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID',)
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    with ApiGatewayTransport(SCRAP_URL) as g:
+        mounts = {SCRAP_URL: g}
+        with httpx.Client(mounts=mounts) as client:
+            return client.get(url)
 
 def extern_request(url):
     SCRAP_URL = "https://azlyrics.com"
@@ -54,8 +53,6 @@ def extern_request(url):
     gateway.start()
     session = requests.Session()
     session.mount(SCRAP_URL, gateway)
-    print(url)
-    time.sleep(random.uniform(1, 3))
     return session.get(url,headers=HEADERS)
     #gateway.shutdown() 
 
@@ -87,7 +84,8 @@ def read_lyrics_extern(artist_name: str, song_name: str):
     data['lyrics'] = data['lyrics'].encode('ISO-8859-1')
     return data
 
-@app.get("X/get-lyrics/{artist_name}/{song_name}/")
+
+@app.get("/test/get-lyrics/{artist_name}/{song_name}/")
 def read_lyrics_extern(artist_name: str, song_name: str):
     data = get_lyrics(artist_name=unquote(artist_name).lower(),
                         song_name=unquote(song_name).lower(),
@@ -95,7 +93,6 @@ def read_lyrics_extern(artist_name: str, song_name: str):
                         )
     if not data:
         raise HTTPException(status_code=404, detail="Lyrics not found")
-    data['lyrics'] = data['lyrics'].encode('ISO-8859-1')
     return data
 
 
