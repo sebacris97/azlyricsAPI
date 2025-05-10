@@ -7,34 +7,33 @@ from urllib.parse import unquote
 from fastapi.responses import JSONResponse
 import os
 from requests_ip_rotator import ApiGateway, EXTRA_REGIONS
+from fake_useragent import UserAgent
+import random
+from selenium import webdriver
+import time
+
+
+ua = UserAgent()
+HEADERS = {'User-Agent': ua.random,
+           'Accept-Encoding': 'gzip, deflate',
+           'Accept': '*/*',
+           'Connection': 'keep-alive'
+           }
 
 app = FastAPI()
 
-"""
+
+
 def extern_request2(url):
     TOKEN = os.environ.get('TOKEN')
     SCRAP_URL = os.environ.get('S_URL')
     PAYLOAD = { 'api_key': TOKEN, 'url': url,
                 'follow_redirect': 'true', 'retry_404': 'true' }
     return requests.get(SCRAP_URL, params=PAYLOAD)
-"""
 
 
 
 
-
-"""
-def extern_request(url):
-    SCRAP_URL = "https://azlyrics.com"
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    with ApiGateway(SCRAP_URL,
-                    access_key_id = AWS_ACCESS_KEY_ID,
-                    access_key_secret = AWS_SECRET_ACCESS_KEY) as g:
-        session = requests.Session()
-        session.mount("https://site.com", g)
-        return session.get(url)
-"""
 
 def extern_request(url):
     SCRAP_URL = "https://azlyrics.com"
@@ -49,7 +48,8 @@ def extern_request(url):
     session = requests.Session()
     session.mount(SCRAP_URL, gateway)
     print(url)
-    return session.get(url)
+    time.sleep(random.uniform(1, 3))
+    return session.get(url,headers=HEADERS)
     #gateway.shutdown() 
 
 
@@ -59,6 +59,16 @@ async def root():
     return "main page"
 
 
+@app.get("/api/get-lyrics/{artist_name}/{song_name}/")
+def read_lyrics_extern(artist_name: str, song_name: str):
+    data = get_lyrics(artist_name=unquote(artist_name).lower(),
+                        song_name=unquote(song_name).lower(),
+                        request=extern_request2
+                        )
+    if not data:
+        raise HTTPException(status_code=404, detail="Lyrics not found")
+    return data
+
 @app.get("/get-lyrics/{artist_name}/{song_name}/")
 def read_lyrics_extern(artist_name: str, song_name: str):
     data = get_lyrics(artist_name=unquote(artist_name).lower(),
@@ -67,8 +77,8 @@ def read_lyrics_extern(artist_name: str, song_name: str):
                         )
     if not data:
         raise HTTPException(status_code=404, detail="Lyrics not found")
+    data['lyrics'] = data['lyrics'].encode('ISO-8859-1')
     return data
-
 
 @app.get("/local/get-lyrics/{artist_name}/{song_name}")
 def read_lyrics(artist_name: str, song_name: str):

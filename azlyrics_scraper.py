@@ -63,7 +63,6 @@ def fetch_song(artist_name, song_name, request=default_request):
     if response:
         songs_dic = get_songs_links(response.text)
         try:
-            print(response.text)
             lyrics_url = search_key_like(songs_dic,song_name.lower())
         except KeyError:
             print('XXXXXXXXXXXXXXX')
