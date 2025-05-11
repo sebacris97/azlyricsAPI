@@ -1,19 +1,24 @@
 import requests
+import urllib3
 from bs4 import BeautifulSoup
 import json
 import os
 from az_google_search import perform_search
+from fake_useragent import UserAgent
 
 BASE_URL = "https://www.azlyrics.com"
-HEADERS = {'User-Agent': 
-           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36',
+ua = UserAgent()
+HEADERS = {'User-Agent':ua.random,
            'Accept-Encoding': 'gzip, deflate',
            'Accept': '*/*',
            'Connection': 'keep-alive'
            }
 
+http = urllib3.PoolManager()
+
 def default_request(url):
-    return requests.get(url,headers=HEADERS,allow_redirects=True)
+     return http.request('GET',url,headers=HEADERS)
+#    return requests.get(url,headers=HEADERS,allow_redirects=True)
 
 def search_key_like(dic, query):
     for key in dic.keys():
@@ -61,7 +66,7 @@ def fetch_song(artist_name, song_name, request=default_request):
     query = perform_search(artist_name)
     response = request(query.get('link'))
     if response:
-        songs_dic = get_songs_links(response.text)
+        songs_dic = get_songs_links(response.data)
         try:
             lyrics_url = search_key_like(songs_dic,song_name.lower())
         except KeyError:
@@ -73,7 +78,7 @@ def fetch_song(artist_name, song_name, request=default_request):
     return
 
 def scraped_song_lyrics(response):
-    soup = BeautifulSoup(response.text, 'html.parser')
+    soup = BeautifulSoup(response.data, 'html.parser')
     return soup.find_all("div")[24].text.replace('\r','')
 
 
