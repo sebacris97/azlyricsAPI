@@ -9,9 +9,8 @@ import os
 from requests_ip_rotator import ApiGateway, EXTRA_REGIONS
 from fake_useragent import UserAgent
 import random
-from selenium import webdriver
 import httpx
-from httpx_ip_rotator import ApiGatewayTransport
+
 
 ua = UserAgent()
 HEADERS = {'User-Agent': ua.random,
@@ -31,15 +30,6 @@ def extern_request2(url):
                 'follow_redirect': 'true', 'retry_404': 'true' }
     return requests.get(SCRAP_URL, params=PAYLOAD)
 
-
-def extern_requestX(url):
-    SCRAP_URL = "https://azlyrics.com"
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID',)
-    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    with ApiGatewayTransport(SCRAP_URL) as g:
-        mounts = {SCRAP_URL: g}
-        with httpx.Client(mounts=mounts) as client:
-            return client.get(url)
 
 def extern_request(url):
     SCRAP_URL = "https://azlyrics.com"
@@ -84,16 +74,6 @@ def read_lyrics_extern(artist_name: str, song_name: str):
     data['lyrics'] = data['lyrics'].encode('ISO-8859-1')
     return data
 
-
-@app.get("/test/get-lyrics/{artist_name}/{song_name}/")
-def read_lyrics_extern(artist_name: str, song_name: str):
-    data = get_lyrics(artist_name=unquote(artist_name).lower(),
-                        song_name=unquote(song_name).lower(),
-                        request=extern_requestX
-                        )
-    if not data:
-        raise HTTPException(status_code=404, detail="Lyrics not found")
-    return data
 
 
 
