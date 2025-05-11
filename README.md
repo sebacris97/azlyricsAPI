@@ -4,7 +4,7 @@ This project started as a FastAPI test — I'm still learning as I go.
 
 The purpose of the API is to return the lyrics of a song from AZLyrics, given the artist's name and the song's title.
 
-It is currently deployed on [Render]([http://54.87.191.230:8000/api/get-lyrics/olivia-rodrigo/traitor/](https://azlyricsapi.onrender.com/api/get-lyrics/olivia%20rodrigo/brutal)).
+It is currently deployed on [[Render]([http://54.87.191.230:8000/api/get-lyrics/olivia-rodrigo/traitor/](https://azlyricsapi.onrender.com/api/get-lyrics/olivia%20rodrigo/brutal)).](https://azlyricsapi.onrender.com/api/get-lyrics/olivia%20rodrigo/brutal/)
 
 ---
 
