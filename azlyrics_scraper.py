@@ -13,7 +13,7 @@ HEADERS = {'User-Agent':
            }
 
 def default_request(url):
-    return requests.get(url,headers=HEADERS)
+    return requests.get(url,headers=HEADERS,allow_redirects=True)
 
 def search_key_like(dic, query):
     for key in dic.keys():

@@ -33,7 +33,7 @@ def extern_requestScrA(url):
 
 def extern_request(url):
     SCRAP_URL = "https://azlyrics.com"
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID',)
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     gateway = ApiGateway(SCRAP_URL,
                          access_key_id = AWS_ACCESS_KEY_ID,
