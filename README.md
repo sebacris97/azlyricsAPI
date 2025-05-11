@@ -32,7 +32,7 @@ If successful, it returns the lyrics scraped from AZLyrics in this format:
 
 The `get_lyrics` function in `azlyrics_scraper.py` supports:
 
-- Returning just the lyrics as a plain string.
+- Returning just the lyrics as a plain text.
 - Passing a custom request function (e.g., from `requests`, `httpx`, or `requests_ip_rotator`), allowing flexibility in how requests are made.
 
 ---
