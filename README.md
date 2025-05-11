@@ -43,18 +43,6 @@ The `get_lyrics` function in `azlyrics_scraper.py` supports:
 
 ---
 
-## ❌ APIs I Stopped Using
-
-- **ScraperAPI** – too slow, and the free tier expires after one week.
-
----
-
-## ✅ Current Stack
-
-- **Request logic** is now handled by [`requests_ip_rotator`](https://github.com/Byron/google-requests-ip-rotator), which uses AWS IAM for rotating IP addresses.
-
----
-
 ## 🚧 To-Do / Planned Improvements
 
 - Add fuzzy matching support to the song name, similar to the artist name.
