@@ -23,7 +23,7 @@ app = FastAPI()
 
 
 
-def extern_request2(url):
+def extern_requestScrA(url):
     TOKEN = os.environ.get('TOKEN')
     SCRAP_URL = os.environ.get('S_URL')
     PAYLOAD = { 'api_key': TOKEN, 'url': url,
@@ -57,11 +57,13 @@ async def root():
 def read_lyrics_extern(artist_name: str, song_name: str):
     data = get_lyrics(artist_name=unquote(artist_name).lower(),
                         song_name=unquote(song_name).lower(),
-                        request=extern_request2
+                        request=extern_requestScrA
                         )
     if not data:
         raise HTTPException(status_code=404, detail="Lyrics not found")
     return data
+
+
 
 @app.get("/get-lyrics/{artist_name}/{song_name}/")
 def read_lyrics_extern(artist_name: str, song_name: str):
