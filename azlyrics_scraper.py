@@ -66,7 +66,7 @@ def fetch_song(artist_name, song_name, request=default_request):
     query = perform_search(artist_name)
     response = request(query.get('link'))
     if response:
-        songs_dic = get_songs_links(response.data)
+        songs_dic = get_songs_links(response.text)
         try:
             lyrics_url = search_key_like(songs_dic,song_name.lower())
         except KeyError:
@@ -78,7 +78,7 @@ def fetch_song(artist_name, song_name, request=default_request):
     return
 
 def scraped_song_lyrics(response):
-    soup = BeautifulSoup(response.data, 'html.parser')
+    soup = BeautifulSoup(response.text,'html.parser')
     return soup.find_all("div")[24].text.replace('\r','')
 
 
