@@ -10,6 +10,8 @@ from requests_ip_rotator import ApiGateway, EXTRA_REGIONS
 from fake_useragent import UserAgent
 import random
 import httpx
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 ua = UserAgent()
@@ -21,6 +23,21 @@ HEADERS = {'User-Agent': ua.random,
 
 app = FastAPI()
 
+
+
+# Allow requests from your frontend origin
+origins = [
+    "http://localhost:8000",  # if testing locally
+    "https://teal-bombolone-e98a8f.netlify.app/"  # or wherever your frontend is hosted
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def extern_requestScrA(url):
