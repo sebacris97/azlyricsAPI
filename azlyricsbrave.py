@@ -53,9 +53,7 @@ def clean_data(response):
 def get_brave_lyrics(artist='',song='',request=default_request):
     search_response = brave_search(artist,song)
     artist, song, lyrics_url = clean_data(search_response)
-    print(artist,' ',song,' ',lyrics_url)
     lyrics_response = request(lyrics_url)
-    print(lyrics_response.text)
     lyrics = scraped_song_lyrics(lyrics_response)
     return {'artist':artist,'song':song,'lyrics':lyrics}
 
