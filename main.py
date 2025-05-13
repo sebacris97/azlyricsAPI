@@ -82,7 +82,7 @@ def read_lyrics_extern2(artist_name: str, song_name: str):
 
 @app.get("/get-lyrics/{artist_name}/{song_name}/")
 def read_lyrics_extern(artist_name: str, song_name: str):
-    data = get_lyrics(artist_name=unquote(artist_name).lower(),
+    data = get_brave_lyrics(artist_name=unquote(artist_name).lower(),
                         song_name=unquote(song_name).lower(),
                         request=extern_request
                         )
@@ -96,7 +96,7 @@ def read_lyrics_extern(artist_name: str, song_name: str):
 
 @app.get("/local/get-lyrics/{artist_name}/{song_name}")
 def read_lyrics(artist_name: str, song_name: str):
-    data = get_lyrics(artist_name=unquote(artist_name).lower(),
+    data = get_brave_lyrics(artist_name=unquote(artist_name).lower(),
                         song_name=unquote(song_name).lower(),
                         )
     if not data:
