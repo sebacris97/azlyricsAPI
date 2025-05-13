@@ -37,7 +37,7 @@ The `get_lyrics` function in `azlyricsbrave.py` supports:
 
 ## 🌐 External APIs Used
 
-- **Google Custom Search API** – used to find the correct AZLyrics URL.
+- **Brave Search API** – used to find the correct AZLyrics URL.
 
 ---
 
