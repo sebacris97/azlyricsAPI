@@ -1,7 +1,6 @@
 
 import json
 from fastapi import FastAPI, Path, HTTPException
-from azlyrics_scraper import get_lyrics
 import requests
 from urllib.parse import unquote
 from fastapi.responses import JSONResponse
