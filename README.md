@@ -45,8 +45,10 @@ The `get_lyrics` function in `azlyrics_scraper.py` supports:
 
 ## 🚧 To-Do / Planned Improvements
 
-- Add fuzzy matching support to the song name, similar to the artist name.
-  - ⚠️ Note: Google Programmable Search allows only 100 searches per day on the free tier.
+- ~Add fuzzy matching support to the song name, similar to the artist name.~
+  - ~⚠️ Note: Google Programmable Search allows only 100 searches per day on the free tier.~
+- **Now i use brave api for searches (2000 search p/month) and requests are reduced by one
+    plus i get spellcheck on artist and song at the same time :D**
 - Refactor and clean up the codebase (still in testing phase).
 - Add support for multiple lyrics sources.
   - Users will be able to choose from which website they want to retrieve lyrics.

@@ -11,8 +11,7 @@ from fake_useragent import UserAgent
 import random
 import httpx
 from fastapi.middleware.cors import CORSMiddleware
-
-
+from azlyricsbrave import get_brave_lyrics
 
 ua = UserAgent()
 HEADERS = {'User-Agent': ua.random,
@@ -27,7 +26,6 @@ app = FastAPI()
 
 # Allow requests from your frontend origin
 origins = [
-    "http://localhost:8000",  # if testing locally
     "https://teal-bombolone-e98a8f.netlify.app/"  # or wherever your frontend is hosted
 ]
 
@@ -71,9 +69,9 @@ async def root():
 
 
 @app.get("/api/get-lyrics/{artist_name}/{song_name}/")
-def read_lyrics_extern(artist_name: str, song_name: str):
-    data = get_lyrics(artist_name=unquote(artist_name).lower(),
-                        song_name=unquote(song_name).lower(),
+def read_lyrics_extern2(artist_name: str, song_name: str):
+    data = get_brave_lyrics(artist=unquote(artist_name).lower(),
+                        song=unquote(song_name).lower(),
                         request=extern_requestScrA
                         )
     if not data:
