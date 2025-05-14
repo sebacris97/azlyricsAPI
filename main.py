@@ -24,13 +24,13 @@ app = FastAPI()
 
 
 # Allow requests from your frontend origin
-origins = [
+origins = [ '*', 'null',
     "https://teal-bombolone-e98a8f.netlify.app/"  # or wherever your frontend is hosted
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
