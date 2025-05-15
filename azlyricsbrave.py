@@ -19,7 +19,7 @@ DEFAULT_HEADERS = {
 BRAVE_HEADERS = {
                 'Accept':'application/json',
                 'Accept-Encoding':'gzip',
-                'X-Subscription-Token': "BSAw9D9mvTVB48SJImW2Vr58CBq4KzD"#os.environ.get('BRAVE_TOKEN')
+                'X-Subscription-Token': os.environ.get('BRAVE_TOKEN')
                 }
 
 BRAVE_PARAMS = {
@@ -45,16 +45,18 @@ def scraped_song_lyrics(response,SEARCH_SITE):
         return soup.find(id="lyric-body-text").text
     return soup.find_all("div")[24].text.replace('\r','')
 
-def clean_data(response):
-    artist = response['web']['results'][0]['title'].split(' - ')[0]
-    song = response['web']['results'][0]['title'].split(' - ')[1].split(' Lyrics')[0]
-    url = response['web']['results'][0]['url']
+def clean_data(response, song):
+    first_result = response['web']['results'][0]
+    title = first_result['title'].split(' - ')
+    song = title[1].split(' Lyrics')[0]
+    artist = title[0]
+    url = first_result['url']
     return artist, song, url
 
 
 def get_brave_lyrics(artist='',song='',request=default_request,SEARCH_SITE=LY):
     search_response = brave_search(artist,song,SEARCH_SITE)
-    artist, song, lyrics_url = clean_data(search_response)
+    artist, song, lyrics_url = clean_data(search_response, song)
     lyrics_response = request(lyrics_url)
     try:
         lyrics = scraped_song_lyrics(lyrics_response,SEARCH_SITE)
@@ -62,5 +64,5 @@ def get_brave_lyrics(artist='',song='',request=default_request,SEARCH_SITE=LY):
         return get_brave_lyrics(artist,song,request,SEARCH_SITE=AZ)
     return {'artist':artist,'song':song,'lyrics':lyrics}
 
-print(get_brave_lyrics('taylor swift','all to well'))
+
 
