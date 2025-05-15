@@ -25,8 +25,11 @@ app = FastAPI()
 
 # Allow requests from your frontend origin
 origins = [ '*', 'null',
-    "https://teal-bombolone-e98a8f.netlify.app/"  # or wherever your frontend is hosted
-]
+            '127.0.0.1:8000',
+            'https://127.0.0.1:8000',
+            'http://127.0.0.1:8000',
+            'https://teal-bombolone-e98a8f.netlify.app'  # or wherever your frontend is hosted
+          ]
 
 app.add_middleware(
     CORSMiddleware,
