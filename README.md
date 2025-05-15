@@ -50,8 +50,9 @@ The `get_lyrics` function in `azlyricsbrave.py` supports:
 - **Now i use brave api for searchs (2000 searchs p/month) and requests are reduced by one
     plus i get spellcheck on artist and song at the same time :D**
 - Refactor and clean up the codebase (still in testing phase).
-- Add support for multiple lyrics sources.
+- **Add support for multiple lyrics sources.** **DONE**
   - Users will be able to choose from which website they want to retrieve lyrics.
   - By default, AZLyrics will be used. If not found, fallback to other sites.
+    (i found that brave is not indexing correctly all the songs in azlyrics.com so first fetch option is lyrics.com)
 
 
